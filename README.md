@@ -1,3 +1,10 @@
+## Integrantes
+
+- Franco Siri
+- Pedro Antonio Sota Taier
+
+**Programación 1 - Tecnicatura en Programación - UTN**
+
 ## Clase NodoProducto
 
 La clase `NodoProducto` representa un nodo dentro de una estructura de tipo árbol para organizar productos y categorías.
