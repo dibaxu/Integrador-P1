@@ -39,10 +39,8 @@ class NodoProducto:
 class SistemaProductos:
     def __init__(self):
         self.raiz = NodoProducto("Catálogo de Productos")
-
-    # ----- Búsqueda -----
-    def buscar_nodo(self, nombre: str, nodo_inicial=None):
-        # Función de búsqueda genérica (para productos o categorías)
+    
+    def buscar_nodo(self, nombre: str, nodo_inicial=None):        
         if nodo_inicial is None:
             nodo_inicial = self.raiz
 
@@ -55,10 +53,8 @@ class SistemaProductos:
                     return resultado
             return None
         return _buscar(nodo_inicial, nombre)
-
-    # ----- Categorías -----
-    def agregar_categoria(self, nombre: str, ruta_padre: str = None):
-        # CORREGIDO: La lógica ahora es más clara. Se busca la categoría padre por su nombre.
+    
+    def agregar_categoria(self, nombre: str, ruta_padre: str = None):        
         nodo_padre = self.raiz
         if ruta_padre:
             nodo_padre = self.buscar_nodo(ruta_padre)
@@ -74,15 +70,14 @@ class SistemaProductos:
         nodo_padre.agregar_hijo(nueva_categoria)
         print(f"✅ Categoría '{nombre}' agregada en '{nodo_padre.nombre}'.")
 
-    def eliminar_categoria(self, nombre_categoria: str):
-        # CORREGIDO: Se implementó la llamada a la función interna y se manejan los resultados.
+    def eliminar_categoria(self, nombre_categoria: str):        
         def _encontrar_y_eliminar_padre(nodo_actual):
             if nombre_categoria in nodo_actual.hijos:
                 nodo_a_eliminar = nodo_actual.hijos[nombre_categoria]
                 if nodo_a_eliminar.es_producto:
-                    return "es_producto" # No es una categoría
+                    return "es_producto" 
                 if nodo_a_eliminar.hijos:
-                    return "no_vacia" # No se puede eliminar si tiene hijos
+                    return "no_vacia" 
                 
                 del nodo_actual.hijos[nombre_categoria]
                 return "exito"
@@ -104,7 +99,7 @@ class SistemaProductos:
         else:
             print(f"Error: No se encontró la categoría '{nombre_categoria}'.")
             
-    # ----- Productos -----
+    
     def agregar_producto(self, categoria: str, nombre: str, precio: float, stock: int):
         nodo_categoria = self.buscar_nodo(categoria)
         if nodo_categoria and not nodo_categoria.es_producto:
@@ -117,19 +112,18 @@ class SistemaProductos:
         else:
             print(f"Error: No se encontró la categoría '{categoria}'.")
             
-    def eliminar_producto(self, nombre_producto: str):
-        # NUEVA FUNCIÓN: Permite eliminar un producto buscándolo en todo el árbol.
+    def eliminar_producto(self, nombre_producto: str):        
         def _encontrar_y_eliminar_padre(nodo_actual):
             if nombre_producto in nodo_actual.hijos:
                 nodo_a_eliminar = nodo_actual.hijos[nombre_producto]
                 if not nodo_a_eliminar.es_producto:
-                    return False # No es un producto
+                    return False 
                 
                 del nodo_actual.hijos[nombre_producto]
                 return True
 
             for hijo in nodo_actual.hijos.values():
-                if not hijo.es_producto: # Solo buscar dentro de categorías
+                if not hijo.es_producto: 
                     if _encontrar_y_eliminar_padre(hijo):
                         return True
             return False
@@ -139,21 +133,18 @@ class SistemaProductos:
         else:
             print(f"Error: No se encontró el producto '{nombre_producto}' o es una categoría.")
 
-    # ----- Visualización -----
-    def mostrar_arbol(self, nodo=None, prefijo=""):
-        # Función útil para visualizar la estructura del árbol.
+    
+    def mostrar_arbol(self, nodo=None, prefijo=""):        
         if nodo is None:
-            nodo = self.raiz
+            nodo = self.raiz        
         
-        # Determina si es el último hijo para dibujar las líneas correctamente
         hijos = list(nodo.hijos.values())
         for i, hijo in enumerate(hijos):
             conector = "└── " if i == len(hijos) - 1 else "├── "
             if hijo.es_producto:
                 print(f"{prefijo}{conector}📦 {hijo.nombre} (Precio: ${hijo.precio}, Stock: {hijo.stock})")
             else:
-                print(f"{prefijo}{conector}📁 {hijo.nombre}")
-                # Prepara el prefijo para la siguiente llamada recursiva
+                print(f"{prefijo}{conector}📁 {hijo.nombre}")                
                 nuevo_prefijo = prefijo + ("    " if i == len(hijos) - 1 else "│   ")
                 self.mostrar_arbol(hijo, nuevo_prefijo)
 

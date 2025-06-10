@@ -5,6 +5,9 @@
 
 **Programación 1 - Tecnicatura en Programación - UTN**
 
+- **Profesor**: Prof. Nicolás Quirós
+- **Tutor**: Matias Santiago Torres
+
 ## Clase NodoProducto
 
 La clase `NodoProducto` representa un nodo dentro de una estructura de tipo árbol para organizar productos y categorías.
@@ -19,11 +22,11 @@ La clase `NodoProducto` representa un nodo dentro de una estructura de tipo árb
 
 ### Métodos
 
-- **agregar_hijo(nodo)**: Agrega un nodo hijo al nodo actual.
-- **buscar_camino(destino, camino=None)**: Busca un camino desde el nodo actual hasta un nodo con nombre igual a `destino`. Devuelve una lista con los nombres del camino encontrado o `None` si no existe.
-- **eliminar_hijo(nombre_hijo)**: Elimina un hijo del nodo actual por su nombre.
+- **agregar_hijo(nodo)**: Agrega un nodo hijo al nodo actual. Si ya existe un hijo con ese nombre, muestra un error.
+- **listar_productos()**: Devuelve una lista de todos los productos (nodos con `es_producto=True`) que se ramifican de este nodo, incluyendo subcategorías.
+- **actualizar_producto(nuevo_nombre, nuevo_precio, nuevo_stock)**: Permite modificar el nombre, precio o stock de un producto. No se puede usar en categorías.
 
-Esta clase nos permite construir y manipular árboles de productos y categorías de manera flexible.
+Esta clase permite construir y manipular árboles de productos y categorías de manera flexible.
 
 ## Clase SistemaProductos
 
@@ -34,37 +37,56 @@ La clase `SistemaProductos` administra un árbol de productos y categorías util
 - **__init__()**
   - Inicializa el sistema con un nodo raíz llamado "Catálogo de Productos".
 
-- **agregar_categoria(nombre: str, ruta: str = None)**
-  - Agrega una nueva categoría al sistema.
-  - Si `ruta` es `None` o una cadena vacía, la categoría se agrega como hija directa de la raíz.
-  - Si se especifica una ruta (por ejemplo, `"Electrónica/Computadoras"`), la categoría se agrega como hijo de la última categoría de la ruta, creando las categorías intermedias si no existen.
-
-- **buscar_nodo_categoria(nombre: str)**
-  - Busca y retorna el nodo de la categoría cuyo nombre coincide con el argumento.
+- **buscar_nodo(nombre: str, nodo_inicial=None)**
+  - Busca y retorna el nodo cuyo nombre coincide con el argumento, recorriendo el árbol en preorden.
   - Si no se encuentra, retorna `None`.
+
+- **agregar_categoria(nombre: str, ruta_padre: str = None)**
+  - Agrega una nueva categoría al sistema.
+  - Si `ruta_padre` es `None` o una cadena vacía, la categoría se agrega como hija directa de la raíz.
+  - Si se especifica una ruta, la categoría se agrega como hija de la categoría indicada por `ruta_padre`.
+  - Si la categoría ya existe en ese nivel, muestra un error.
+
+- **eliminar_categoria(nombre_categoria: str)**
+  - Elimina una categoría si está vacía (no tiene hijos).
+  - Si la categoría tiene productos o subcategorías, muestra un error.
+  - Si el nombre corresponde a un producto, muestra un error.
 
 - **agregar_producto(categoria: str, nombre: str, precio: float, stock: int)**
   - Agrega un producto como hijo de la categoría indicada.
-  - Si la categoría no existe, muestra un mensaje de error.
+  - Si la categoría no existe o el nombre ya existe en esa categoría, muestra un error.
+
+- **eliminar_producto(nombre_producto: str)**
+  - Elimina un producto buscándolo en todo el árbol.
+  - Si el nombre corresponde a una categoría o no se encuentra, muestra un error.
+
+- **mostrar_arbol(nodo=None, prefijo="")**
+  - Muestra la estructura del árbol de categorías y productos de forma visual y jerárquica.
+
+---
 
 ### Funcionamiento
 
 - El sistema permite construir una jerarquía de categorías y productos.
 - Las categorías pueden anidarse unas dentro de otras.
 - Los productos solo pueden agregarse como hijos de una categoría existente.
-- La búsqueda de categorías se realiza por nombre, recorriendo todo el árbol.
+- La búsqueda de categorías y productos se realiza por nombre, recorriendo todo el árbol en preorden.
+- Se pueden eliminar productos y categorías (solo si están vacías).
+- Se puede actualizar la información de los productos.
+- Se puede visualizar el árbol completo de manera jerárquica.
 
 ---
 
 ## Lista de mejoras o revisiones
 
-1. **Nombres duplicados:** Si hay dos categorías con el mismo nombre en diferentes ramas qué pasa? Claramente no deseado
-2. **Eliminar categorías y productos:** Agregar métodos para eliminar categorías y productos.
-3. **Listar productos/categorías:** Métodos para listar todos los productos de una categoría o todas las categorías hijas.
-4. **Updatear producto:** Métodos para modificar el nombre, precio o stock de un producto.
+1. Interfaz gráfica de usuario para facilitar la interacción
+2. Análisis de datos y generación de reportes automatizados
+3. Validación de rutas.
+4. Métodos para guardar y cargar la estructura en archivos (por ejemplo, JSON).
+5. Métodos para agregar/disminuir stock.
 
-### Extras
-5. **Validar rutas:** validación de rutas.
-6. **Serialización:** Métodos para guardar y cargar la estructura en archivos (por ejemplo, JSON).
-7. **Control de stock:** Métodos para agregar/disminuir stock.
+---
+
+**Ejemplo de uso:**  
+Ver el bloque `if __name__ == "__main__":` en el archivo principal para un paso a paso de cómo utilizar el sistema.
 
