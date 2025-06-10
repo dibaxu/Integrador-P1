@@ -3,10 +3,13 @@
 - Franco Siri
 - Pedro Antonio Sota Taier
 
+- **Video**: https://youtu.be/KO8ORZHhQRY
+
 **Programación 1 - Tecnicatura en Programación - UTN**
 
 - **Profesor**: Prof. Nicolás Quirós
 - **Tutor**: Matias Santiago Torres
+- **Comisión 22**
 
 ## Clase NodoProducto
 
